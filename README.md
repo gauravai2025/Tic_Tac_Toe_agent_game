@@ -21,9 +21,4 @@ The algorithm uses the following steps:
 2. If it's the opponent's turn, loop through available moves, simulate each move, and call the Minimax function recursively for the computer's turn.
 3. Evaluate and return the best move with the highest score for the computer or the lowest score for the opponent.
 
-## Getting Started
 
-1. Clone this repository:
-
-   ```sh
-   git clone https://github.com/gauravai2025/tic-tac-toe-minimax.git
