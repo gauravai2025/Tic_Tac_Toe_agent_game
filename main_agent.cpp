@@ -17,29 +17,28 @@ unordered_map<char,string> mp;
 
 const char EMPTY_CELL = ' ';
 // define the empty cell
- vector<vector<char>> board(3, std::vector<char>(3, EMPTY_CELL));
 
- //input the name of the player
-void toss(){
-    cout<<"Enter your name : \n";
-    cin>>name;
+
+// toos function
+void toss(string name){
+   
     // Create a random number generator engine
-    std::random_device rd;  // Obtain a random seed from the hardware
-    std::mt19937 rng(rd()); // Mersenne Twister engine seeded with rd()
+    random_device rd;  // Obtain a random seed from the hardware
+    mt19937 rng(rd()); // Mersenne Twister engine seeded with rd()
 
     // Define the range
     int min_value = 1;
     int max_value = 1000;
 
     // Create a distribution that generates numbers within the range [min_value, max_value]
-    std::uniform_int_distribution<int> distribution(min_value, max_value);
+    uniform_int_distribution<int> distribution(min_value, max_value);
 
     // Generate a random number within the specified range
     int random_number = distribution(rng);
       
     // check who will start first
     if(random_number&1){
-        cout<<name<<" will start first \n";
+        cout<<name<<" won the toss  \n";
         cout<<"choose your token X or O \n";
         cin>>token;
 
@@ -72,7 +71,8 @@ void toss(){
     }
     
     else{
-    cout<<"computer"<<" will start first \n";
+    cout<<"computer"<<" won the toss \n";
+    playerTurn = false;
     tokencomp='X';
     token='O';
     
@@ -82,13 +82,9 @@ void toss(){
         }
     }
 
-
-  
 }
 
-
-
-
+// Function to display the Tic Tac Toe board
 void grid()
 {
 
@@ -107,7 +103,7 @@ cout<<"     |   |    "<<endl;
 }
 
 // Function to display the Tic Tac Toe board
-void displayBoard(const std::vector<std::vector<char>>& board) {
+void displayBoard(const vector<vector<char>>& board) {
     for (const auto& row : board) {
         for (char cell : row) {
             cout << cell << ' ';
@@ -118,7 +114,7 @@ void displayBoard(const std::vector<std::vector<char>>& board) {
 
 
 // Function to check if the board is full
-bool isBoardFull(const std::vector<std::vector<char>>& board) {
+bool isBoardFull(const vector<vector<char>>& board) {
     for (const auto& row : board) {
         for (char cell : row) {
             if (cell == EMPTY_CELL) {
@@ -131,7 +127,7 @@ bool isBoardFull(const std::vector<std::vector<char>>& board) {
 
 
 // Function to evaluate the board for the minimax algorithm
-int evaluateBoard(const std::vector<std::vector<char>>& board) {
+int evaluateBoard(const vector<vector<char>>& board) {
     // Check rows, columns, and diagonals for wins
     for (int i = 0; i < 3; ++i) {
         if ((board[i][0] == board[i][1] && board[i][1] == board[i][2]) && board[i][0] != EMPTY_CELL) {
@@ -153,7 +149,7 @@ int evaluateBoard(const std::vector<std::vector<char>>& board) {
 
 
 // Minimax algorithm
-int minimax(std::vector<std::vector<char>>& board, int depth, bool isMaximizer) {
+int minimax(vector<vector<char>>& board, int depth, bool isMaximizer) {
     int score = evaluateBoard(board);
 
     if (score == 10) {
@@ -220,14 +216,37 @@ void makeAIMove(vector<vector<char>>& board) {
 
 
 int main(){
-toss();
-grid();
+cout<<"Tic Tac Toe Game: Human vs AI Agent \n";
+cout<<"----------------------------------- \n";
+  int cntwin=0;
+  int cnt_draw=0;;
+  int cnt_total=0;
+   //input the name of the player
+   cout<<"Enter your name : \n";
+   cin>>name;
+while(true){
+ int choice_st;
+    cout<<"1.enter 1 to play series \n";
+    cout<<"2.enter 2 to exit \n";
+    cin>>choice_st;
+  
+if(choice_st==1){
+    cnt_total++;
 
+toss(name);
+grid();
+ vector<vector<char>> board(3, vector<char>(3, EMPTY_CELL));
     while (true) {
         displayBoard(board);
 
         if (playerTurn) {
+            cout<<"your trun:\n";
             int row, col;
+            int choice;
+            cout<<"1.enter 1 to play match \n";
+            cout<<"2.enter 2 to exit \n";
+            cin>>choice;
+            if(choice==1){
         cout << mp[token]<<"'s turn. Enter row number and column number within given range (0-2): ";
         cin >> row >> col;
             if (row < 0 || row >= 3 || col < 0 || col >= 3 || board[row][col] != EMPTY_CELL) {
@@ -238,11 +257,11 @@ grid();
             board[row][col] = token;
         }
          else {
-        cout << "computer's turn:" <<endl;
-            makeAIMove(board);
+         cout<<"computer win:" <<endl;
+            break;
         }
 
-        if (evaluateBoard(board) == 10) {
+          if (evaluateBoard(board) == 10) {
             displayBoard(board);
             cout << "Computer wins!!!" <<endl;
             break;
@@ -257,7 +276,41 @@ grid();
         }
 
         playerTurn = !playerTurn;
-    }
+        }
+        else{
+           cout << "computer's turn:" <<endl;
+            makeAIMove(board);
+              if (evaluateBoard(board) == 10) {
+            displayBoard(board);
+            cout << "Computer wins!!!" <<endl;
+            break;
+        } 
+        else if (evaluateBoard(board) == -10) {
+            displayBoard(board);
+            cout << "You win!!!" <<endl;
+            cntwin++;
+            break;
+        } 
+        else if (isBoardFull(board)) {
+            displayBoard(board);
+            std::cout << "It's a draw!" << std::endl;
+            cnt_draw++;
+            break;
+        }
 
+          playerTurn = !playerTurn;
+        }
+    }
+}
+  
+else{
+ 
+    cout<<"Total number of games played : "<<cnt_total<<endl;
+    cout<<"Total number of games won by You : "<<cntwin<<endl;
+    cout<<"Total number of games draw : "<<cnt_draw<<endl;
+    cout<<"Thank you for playing! have a peaceful day \n"<<endl;
+    exit(0);
+}
+}
     return 0;
 }
