@@ -20,5 +20,18 @@ The algorithm uses the following steps:
 1. If it's the computer's turn, loop through available moves, simulate each move, and call the Minimax function recursively for the opponent's turn.
 2. If it's the opponent's turn, loop through available moves, simulate each move, and call the Minimax function recursively for the computer's turn.
 3. Evaluate and return the best move with the highest score for the computer or the lowest score for the opponent.
+   
+## working of Project
+
+1.Define Grid 
+<br>
+2.Enter name of player
+<br>
+3. Player have option to play series of game or exit. <br>
+4. Toss will be done by generating random positive number.First move decided by even or odd number. If odd number generate then  player will play first otherwise computer will make first move.<br>
+5.If player won the toss then have to select character X or O, otherwise agent is ssigned with X <br>
+6.After each move, grid is evaluated to decide winner.<br>
+7. If winner is decide for a game then player will have option to play another match or exit.<br> 
+8. After series of games is finished then print total games played, number of match won by player and number of match drawn. 
 
 
